@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  laravel:
+    build: ./.docker/laravel
+    container_name: laravel
+    ports:
+    - ${DOCKER_LAREVEL_PORT}:${DOCKER_LAREVEL_PORT}
+    volumes:
+    - .:/app
+    - /app/.docker
+    - /app/node_modules
+    command: php artisan serve --host 0.0.0.0 --port ${DOCKER_LAREVEL_PORT}
+
+  composer:
+    image: composer:latest
+    volumes:
+    - .:/app
+    - /app/.docker
+    - /app/node_modules
+    - composer-cache:/tmp/cache
+
+  node:
+    image: node:13.7-alpine
+    volumes:
+    - .:/app
+    - /app/.docker
+    - yarn-cache:/usr/local/share/.cache/yarn
+    working_dir: /app
+
+  mariadb:
+    image: mariadb:10.4
+    container_name: mariadb
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    ports:
+    - ${DOCKER_MARIADB_PORT}:3306
+    volumes:
+    -  mariadb:/var/lib/mysql
+
+  redis:
+    image: redis:5.0
+    container_name: redis
+    volumes:
+    - redis:/data
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+    - ${DOCKER_MINIO_PORT}:9000
+    environment:
+      MINIO_ACCESS_KEY: ${DOCKER_MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${DOCKER_MINIO_SECRET_KEY}
+    volumes:
+    - ./.docker/minio/volumes/data:/data
+    - ./.docker/minio/volumes/config:/root/.minio
+    - ./.docker/minio/volumes/export:/export
+    entrypoint: sh
+    command: -c 'cp -r /export/* / && minio server /data'
+
+volumes:
+  mariadb:
+  redis:
+  composer-cache:
+  yarn-cache:
