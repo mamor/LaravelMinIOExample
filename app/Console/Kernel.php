@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use Application\Console\Commands\PutCommand;
+use Application\Console\Commands\SignedUrlCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        PutCommand::class,
+        SignedUrlCommand::class,
     ];
 
     /**
