@@ -13,7 +13,7 @@ services:
     command: php artisan serve --host 0.0.0.0 --port ${DOCKER_LAREVEL_PORT}
 
   composer:
-    image: composer:latest
+    image: madworks/docker-composer:latest
     volumes:
     - .:/app
     - /app/.docker
