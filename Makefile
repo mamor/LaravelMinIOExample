@@ -1,9 +1,9 @@
 key:
-	docker exec laravel php artisan key:generate
+	docker-compose exec laravel php artisan key:generate
 ide:
-	docker exec laravel php artisan ide-helper:generate && php artisan ide-helper:models -R -W -D src/Eloquent -I App\\User && php artisan ide-helper:meta
+	docker-compose exec laravel php artisan ide-helper:generate && php artisan ide-helper:models -R -W -D src/Eloquent -I App\\User && php artisan ide-helper:meta
 phpunit:
-	docker exec laravel ./vendor/bin/phpunit
+	docker-compose exec laravel ./vendor/bin/phpunit
 composer-install:
 	docker-compose run --rm composer install
 composer-update:
@@ -13,4 +13,4 @@ yarn-install:
 yarn-upgrade:
 	docker-compose run --rm node yarn upgrade
 dusk:
-	docker exec laravel ln -sf /usr/bin/chromedriver /app/vendor/laravel/dusk/bin/chromedriver-linux && php artisan dusk
+	docker-compose exec laravel ln -sf /usr/bin/chromedriver /app/vendor/laravel/dusk/bin/chromedriver-linux && php artisan dusk
